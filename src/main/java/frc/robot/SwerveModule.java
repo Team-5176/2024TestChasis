@@ -84,7 +84,8 @@ public class SwerveModule {
     m_turningEncoder = new MA3AnalogEncoder(MA3AnalogId, maxv, calibrationK);
 
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-    m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_VELO_COVNV_FACT);
+    m_driveEncoder.setPositionConversionFactor(Constants.DRIVE_COVNV_FACT);
+    m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_COVNV_FACT);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -93,8 +94,7 @@ public class SwerveModule {
 
   private double getdriveVelocity(){
     //TODO: Make sure that this gets changed to work wtih the neo relative encoder
-    double rawEncoderOutput = -m_driveEncoder.getSelectedSensorVelocity(); // output is in units per 100ms
-    double rotationsPerSecondofWheel = ((rawEncoderOutput * 10) / kEncoderResolution) * (1/6.67); // gear ratio is 6.67:1
+    double rotationsPerSecondofWheel = m_driveEncoder.getVelocity(); // Rev library automatically calculates velocity if given conversion factor(done in constructor)
     return rotationsPerSecondofWheel * kWheelRadius * 3.14159 * 2; // speed of the wheel treads in meters/second
   }
 
@@ -109,8 +109,8 @@ public class SwerveModule {
   }
 
   public SwerveModulePosition getPosition(){
-    double rawEncoderOutput = -m_driveMotor.getSelectedSensorPosition(); // output is in units per 100ms
-    double rotationsWheel = ((rawEncoderOutput * 1) / kEncoderResolution) * (1/6.67) * kWheelRadius * 3.14159 * 2; // gear ratio is 6.67:1
+      //TODO: Make sure that this gets changed to work wtih the neo relative encoder
+    double rotationsWheel = m_driveEncoder.getPosition(); // Rev library automatically calculates position if given conversion factor(done in constructor)
     return new SwerveModulePosition(rotationsWheel, m_turningEncoder.getRotation());
   }
   /**
@@ -151,7 +151,7 @@ public class SwerveModule {
 
     //set motor powers
     m_driveMotor.set(-(driveOutput + driveFeedforward));
-    m_turningMotor.set(ControlMode.PercentOutput, turnOutput + turnFeedforward);
+    m_turningMotor.set(turnOutput + turnFeedforward);
     
   }
 }

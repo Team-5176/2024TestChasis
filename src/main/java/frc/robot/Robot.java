@@ -44,9 +44,7 @@ public class Robot extends TimedRobot {
   public static final XboxController m_controller = new XboxController(0);
   public static final XboxController m_copilot_controller = new XboxController(1);
   public static Drivetrain m_swerve;
-  private final ObjectManipulatorSubsystem manipulator = new ObjectManipulatorSubsystem();
-  private final ManipulatorCommand manipulatorCommand = new ManipulatorCommand(manipulator);
-  private Auto auto;// = new Auto(manipulator, m_swerve, 0);
+
 
   // Slew rate limiters to make joystick inputs more gentle; 1/2 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(2);
@@ -65,7 +63,6 @@ public class Robot extends TimedRobot {
 
   
   public Robot(){
-    manipulator.setDefaultCommand(manipulatorCommand);
     m_swerve = new Drivetrain();    
     
   }
@@ -94,8 +91,6 @@ public class Robot extends TimedRobot {
     balance = SmartDashboard.getBoolean("Attempt Charging Station", false);
     isAuto = true;
     
-    auto = new Auto( 0, manipulator);
-
     //gets alliance color from driverStation and sets IS_BLUE acordingly;
     if(DriverStation.getAlliance() == Alliance.Red)
       Constants.IS_BLUE = false;
@@ -107,19 +102,16 @@ public class Robot extends TimedRobot {
     
     //auto.setRoute((int)Math.round(SmartDashboard.getNumber("Starting position", 0)));
     //schedule the autonomous command
-    auto.schedule();
   }
 
   @Override
   public void autonomousPeriodic() {
     isAuto = true;
-    m_swerve.updateOdometry();
     
   }
 
   @Override
   public void teleopInit(){
-    manipulatorCommand.designateStep = 0;
     isAuto = false;
     if(m_swerve == null){
       //initiate swerve based on starting position specified in SmartDashboard. I rounded before converting to int just in case there are any double shenanigans
@@ -134,7 +126,6 @@ public class Robot extends TimedRobot {
     driveWithJoystick(false);
     double angle = m_swerve.getHeading();
     isAuto = false;
-    m_swerve.updateOdometry();
     SmartDashboard.putNumber("Pos x", m_swerve.getPose().getX());
     SmartDashboard.putNumber("Pos y", m_swerve.getPose().getY());
     SmartDashboard.putNumber("Heading", angle);

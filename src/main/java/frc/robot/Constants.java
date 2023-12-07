@@ -47,7 +47,7 @@ public final class Constants {
 
     //the gear ratio of the drive gears
     //TODO: Make sure this is actually correct
-    public final static double DRIVE_VELO_COVNV_FACT = 6.75;
+    public final static double DRIVE_COVNV_FACT = 6.75;
 
     public static final double ROTATION_DEADZONE = 0.1;
     public static final double ROTATION_COMPENSATOR_DELAY = 0.5; 
