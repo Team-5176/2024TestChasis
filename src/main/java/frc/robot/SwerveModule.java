@@ -84,6 +84,7 @@ public class SwerveModule {
     m_turningEncoder = new MA3AnalogEncoder(MA3AnalogId, maxv, calibrationK);
 
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_VELO_COVNV_FACT);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -92,7 +93,7 @@ public class SwerveModule {
 
   private double getdriveVelocity(){
     //TODO: Make sure that this gets changed to work wtih the neo relative encoder
-    double rawEncoderOutput = -m_driveMotor.getSelectedSensorVelocity(); // output is in units per 100ms
+    double rawEncoderOutput = -m_driveEncoder.getSelectedSensorVelocity(); // output is in units per 100ms
     double rotationsPerSecondofWheel = ((rawEncoderOutput * 10) / kEncoderResolution) * (1/6.67); // gear ratio is 6.67:1
     return rotationsPerSecondofWheel * kWheelRadius * 3.14159 * 2; // speed of the wheel treads in meters/second
   }
