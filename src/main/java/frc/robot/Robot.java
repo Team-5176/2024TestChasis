@@ -45,7 +45,6 @@ public class Robot extends TimedRobot {
   public static final XboxController m_copilot_controller = new XboxController(1);
   public static Drivetrain m_swerve;
 
-
   // Slew rate limiters to make joystick inputs more gentle; 1/2 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(2);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(2);
@@ -91,6 +90,7 @@ public class Robot extends TimedRobot {
     balance = SmartDashboard.getBoolean("Attempt Charging Station", false);
     isAuto = true;
     
+
     //gets alliance color from driverStation and sets IS_BLUE acordingly;
     if(DriverStation.getAlliance() == Alliance.Red)
       Constants.IS_BLUE = false;

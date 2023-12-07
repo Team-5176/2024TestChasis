@@ -29,15 +29,19 @@ public final class Constants {
 
     public final static double DRIVE_MAX_V = 4.79;
 
-    public final static int FL_DRIVE_ID = 5;
-    public final static int BL_DRIVE_ID = 7;
-    public final static int BR_DRIVE_ID = 1;
-    public final static int FR_DRIVE_ID = 3;
 
-    public final static int FL_TURN_ID = 4;
-    public final static int BL_TURN_ID = 2;
+
+    //using odd numbers for drive controllers and even numbers for turning controllers for my sanity, and because its super easy to id spark maxes i just set them sequentially
+    public final static int FL_DRIVE_ID = 1;
+    public final static int FR_DRIVE_ID = 3;
+    public final static int BL_DRIVE_ID = 5;
+    public final static int BR_DRIVE_ID = 7;
+    
+
+    public final static int FL_TURN_ID = 2;
+    public final static int FR_TURN_ID = 4;
+    public final static int BL_TURN_ID = 6;
     public final static int BR_TURN_ID = 8;
-    public final static int FR_TURN_ID = 6;
 
     public final static int FL_MA3_ID = 1;
     public final static int FR_MA3_ID = 2;
