@@ -4,32 +4,19 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-
-
-import java.lang.invoke.VolatileCallSite;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.revrobotics.RelativeEncoder;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.util.MA3AnalogEncoder;
 
 public class SwerveModule {
@@ -40,11 +27,12 @@ public class SwerveModule {
   private static final double kModuleMaxAngularAcceleration =
       2 * Math.PI * 6; // radians per second squared
 
-  public final WPI_TalonFX m_driveMotor;
-  public final VictorSPX m_turningMotor;
+  public final CANSparkMax m_driveMotor;
+  public final CANSparkMax m_turningMotor;
 
 
   public final MA3AnalogEncoder m_turningEncoder;
+  public final RelativeEncoder m_driveEncoder;
 
   // Gains determined by guess and check method
   private final PIDController m_drivePIDController = new PIDController(0.1, 0.001, 0);
@@ -91,9 +79,11 @@ public class SwerveModule {
       ) {
 
     this.name = name;
-    m_driveMotor = new WPI_TalonFX(driveMotorId);
-    m_turningMotor = new VictorSPX(turningMotorId);
+    m_driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
+    m_turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
     m_turningEncoder = new MA3AnalogEncoder(MA3AnalogId, maxv, calibrationK);
+
+    m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -101,6 +91,7 @@ public class SwerveModule {
   }
 
   private double getdriveVelocity(){
+    //TODO: Make sure that this gets changed to work wtih the neo relative encoder
     double rawEncoderOutput = -m_driveMotor.getSelectedSensorVelocity(); // output is in units per 100ms
     double rotationsPerSecondofWheel = ((rawEncoderOutput * 10) / kEncoderResolution) * (1/6.67); // gear ratio is 6.67:1
     return rotationsPerSecondofWheel * kWheelRadius * 3.14159 * 2; // speed of the wheel treads in meters/second

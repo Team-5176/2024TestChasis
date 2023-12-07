@@ -56,7 +56,6 @@ public class Drivetrain extends SubsystemBase{
   public static final AHRS navx = new AHRS(SerialPort.Port.kUSB);
   public final PhotonCamera camera1 = new PhotonCamera("Cam1");
 
-  public PhotonCameraWrapper pcw;
   
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
@@ -68,7 +67,6 @@ public class Drivetrain extends SubsystemBase{
 
   public Drivetrain() {
     //navx = new AHRS(I2C.Port.kMXP);
-    pcw = new PhotonCameraWrapper();
     Pose2d initialPose;
     if(Constants.AUTO == 1){
       if(Constants.IS_BLUE){
@@ -156,44 +154,7 @@ public class Drivetrain extends SubsystemBase{
   }
 
   /** Updates the field relative position of the robot. */
-  public void updateOdometry() {
-    m_poseEstimator.update(
-        Rotation2d.fromDegrees(getHeading()),
-        new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_backLeft.getPosition(),
-          m_backRight.getPosition()
-        });
-
-      
-      Optional<EstimatedRobotPose> result =
-              pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
-
-      if (result.isPresent()) {
-          EstimatedRobotPose camPose = result.get();
-          m_poseEstimator.addVisionMeasurement(
-                  camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-      }
-       
-    /* 
-    // Also apply vision measurements. We use 0.3 seconds in the past as an example -- on
-    // a real robot, this must be calculated based either on latency or timestamps.
-    if(Vision.hasNewTarget){
-      Pose2d estimate = Vision.getPositionEstimate();
-      double distance = Math.sqrt((estimate.getX() - getPose().getX())*(estimate.getX() - getPose().getX()) + (estimate.getY() - getPose().getY())*(estimate.getY() - getPose().getY()));
-      SmartDashboard.putNumber("Distance error", distance);
-      if(distance < 1.0){
-        m_poseEstimator.addVisionMeasurement(
-            Vision.getPositionEstimate(),
-            Vision.timestamp,
-            VecBuilder.fill(0.01, 0.01, 0.01)); //This 3d vector represents the standard deviation of vision position estimates, as x (m), y (m), and theta (radians)
-            // currently these values are ones I chose as arbitrary, small numbers, but eventually it might be better to actually quantify these values
-      }
-    }
-    */
-    
-  }
+  
 
   public PIDController xController = new PIDController(1.0, 0.04, 0.00);
   public PIDController yController = new PIDController(1.0, 0.04, 0.00);
