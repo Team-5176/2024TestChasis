@@ -41,10 +41,10 @@ public class Drivetrain extends SubsystemBase{
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI * .6; // 1/2 rotation per second
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.288925, 0.29845);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.288925, -0.29845);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.288925, 0.29845);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.288925, -0.29845);
+  private final Translation2d m_frontLeftLocation = new Translation2d(0.29448125, 0.251175);
+  private final Translation2d m_frontRightLocation = new Translation2d(0.29448125, -0.251175);
+  private final Translation2d m_backLeftLocation = new Translation2d(-0.29448125, 0.251175);
+  private final Translation2d m_backRightLocation = new Translation2d(-0.29448125, -0.251175);
 
   public double startingHeading = 0;
 
