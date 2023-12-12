@@ -30,7 +30,7 @@ public class ThriftyEncoder {
      * @return the current raw position of the absolute encoder in radians.
      */
     public double getPosition() {
-        return (inverted ? -1.0 : 1.0)
+        return (inverted ? -1.0 : 1.0) //for whoever gets this next this is a ternary operator, basically a very simple if statement. if inverted == true, the val on the left of the : is used, of inverted == false, the val on the right is used
                 * ((analogInput.getAverageVoltage() / RobotController.getVoltage5V()) * (Math.PI * 2) - Math.PI);
     }
 
