@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.MA3AnalogEncoder;
+import frc.robot.util.ThriftyEncoder;
 
 public class SwerveModule {
   private static final double kWheelRadius = 0.0508; // in m
@@ -31,7 +32,7 @@ public class SwerveModule {
   public final CANSparkMax m_turningMotor;
 
 
-  public final MA3AnalogEncoder m_turningEncoder;
+  public final ThriftyEncoder m_turningEncoder;
   public final RelativeEncoder m_driveEncoder;
 
   // Gains determined by guess and check method
@@ -81,7 +82,7 @@ public class SwerveModule {
     this.name = name;
     m_driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
-    m_turningEncoder = new MA3AnalogEncoder(MA3AnalogId, maxv, calibrationK);
+    m_turningEncoder = new ThriftyEncoder(MA3AnalogId, calibrationK);
 
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_driveEncoder.setPositionConversionFactor(Constants.DRIVE_COVNV_FACT);
