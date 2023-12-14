@@ -86,6 +86,9 @@ public class SwerveModule {
     m_driveEncoder.setPositionConversionFactor(Constants.DRIVE_COVNV_FACT);
     m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_COVNV_FACT);
 
+    m_driveMotor.burnFlash();
+    m_turningMotor.burnFlash();
+
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
