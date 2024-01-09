@@ -40,7 +40,7 @@ public class SwerveModule {
   // Gains determined by guess and check method
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
-          3.0,
+          .01,
           0.01,
           0.05,
           // Constraints without these multipliers made response time far too slow, and changing the constants to reasonable numbers made overall movement too jerky
