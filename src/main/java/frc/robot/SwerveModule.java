@@ -39,7 +39,7 @@ public class SwerveModule {
   // Gains determined by guess and check method
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
-          3.0,
+          0.1,
           0.01,
           0.05,
           // Constraints without these multipliers made response time far too slow, and changing the constants to reasonable numbers made overall movement too jerky
@@ -56,7 +56,7 @@ public class SwerveModule {
   // ks = power level where motor first starts turning
   // kv = constant relating rotation speed to (input power - ks)
   // These values were determined experimentally
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.1, 0.00167);
+  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.00, 0.0);
   
   private String name;
   /**
