@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -17,7 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.util.MA3AnalogEncoder;
+import frc.robot.util.ThriftyEncoder;
 
 public class SwerveModule {
   private static final double kWheelRadius = 0.0508; // in m
@@ -31,7 +30,7 @@ public class SwerveModule {
   public final CANSparkMax m_turningMotor;
 
 
-  public final MA3AnalogEncoder m_turningEncoder;
+  public final ThriftyEncoder m_turningEncoder;
   public final RelativeEncoder m_driveEncoder;
 
   // Gains determined by guess and check method
@@ -57,7 +56,7 @@ public class SwerveModule {
   // ks = power level where motor first starts turning
   // kv = constant relating rotation speed to (input power - ks)
   // These values were determined experimentally
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.1, 0.00167);
+  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.00, 0.0);
   
   private String name;
   /**
@@ -81,11 +80,14 @@ public class SwerveModule {
     this.name = name;
     m_driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
-    m_turningEncoder = new MA3AnalogEncoder(MA3AnalogId, maxv, calibrationK);
+    m_turningEncoder = new ThriftyEncoder(MA3AnalogId, calibrationK);
 
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_driveEncoder.setPositionConversionFactor(Constants.DRIVE_COVNV_FACT);
     m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_COVNV_FACT);
+
+    m_driveMotor.burnFlash();
+    m_turningMotor.burnFlash();
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
