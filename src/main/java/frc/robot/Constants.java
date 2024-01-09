@@ -57,6 +57,12 @@ public final class Constants {
     public static final double ROTATION_COMPENSATOR_DELAY = 0.5; 
 
     public static final double AUTO_SPEED_LIMIT = 0.4;
+
+    public static final double ksVolts = 1;
+    public static final double kvVoltSecondsPerMeter = 0.8;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.15;
+
+
     //90 - reportedAngle
     //reported angle is == what is reported with the wheel straight and the big part facing out
     /*public final static double FL_K = 90.0 - 123.93;
