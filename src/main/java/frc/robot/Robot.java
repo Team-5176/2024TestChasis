@@ -5,7 +5,6 @@
 package frc.robot;
 
 
-import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -47,7 +46,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    PathPlannerServer.startServer(5811);
     //Send these values to SmartDashboard so that they can be used to choose what auto to do. 
     //SmartDashboard.putBoolean("Attempt Charging Station", false);
     //SmartDashboard.putNumber("Starting position", 0);
@@ -66,26 +64,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit(){
-    balance = SmartDashboard.getBoolean("Attempt Charging Station", false);
-    isAuto = true;
-    
 
-    //gets alliance color from driverStation and sets IS_BLUE acordingly;
-    if(DriverStation.getAlliance() == Alliance.Red)
-      Constants.IS_BLUE = false;
-    else
-      Constants.IS_BLUE = true;
-
-    
-    //m_swerve = new Drivetrain(new Pose2d());
-    
-    //auto.setRoute((int)Math.round(SmartDashboard.getNumber("Starting position", 0)));
-    //schedule the autonomous command
   }
 
   @Override
   public void autonomousPeriodic() {
-    isAuto = true;
     
   }
 

@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -172,16 +168,4 @@ public final class Constants {
     // places cube middle then exits over charging stations
     public static int AUTO = 1;
     public static boolean IS_BLUE = false;
-    static class AutonomousPaths {
-        static final PathPlannerTrajectory path1_1 = PathPlanner.loadPath("1-1", new PathConstraints(2.5, 1.0));
-        static final PathPlannerTrajectory path1_2 = PathPlanner.loadPath("1-2", new PathConstraints(2.5, 1.0));
-        static final PathPlannerTrajectory path2_1 = PathPlanner.loadPath("2-1", new PathConstraints(2.5, 1.0));
-
-        static final PathPlannerTrajectory path1_1Red = PathPlanner.loadPath("1-1 Red", new PathConstraints(2.5, 1.0));
-        static final PathPlannerTrajectory path1_2Red = PathPlanner.loadPath("1-2 Red", new PathConstraints(2.5, 1.0));
-        static final PathPlannerTrajectory path2_1Red = PathPlanner.loadPath("2-1 Red", new PathConstraints(2.5, 1.0));
-    
-        static final PathPlannerTrajectory path3_1 = PathPlanner.loadPath("3-1", new PathConstraints(2.5, 1.0));
-        static final PathPlannerTrajectory path3_1Red = PathPlanner.loadPath("3-1 Red", new PathConstraints(2.5, 1.0));
-    }
 }

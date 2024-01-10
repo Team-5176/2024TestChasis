@@ -9,8 +9,7 @@ package frc.robot;
 import org.photonvision.PhotonCamera;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import com.pathplanner.lib.server.PathPlannerServer;
+
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
@@ -58,18 +57,8 @@ public class Drivetrain extends SubsystemBase{
   public Drivetrain() {
     //navx = new AHRS(I2C.Port.kMXP);
     Pose2d initialPose;
-    if(Constants.AUTO == 1){
-      if(Constants.IS_BLUE){
-        initialPose = Constants.AutonomousPaths.path1_1.getInitialHolonomicPose();
-      }
-      else{
-        initialPose = Constants.AutonomousPaths.path1_1Red.getInitialHolonomicPose();
-      }
-    } 
-
-    else{
-      initialPose = new Pose2d();
-    }
+   
+    initialPose = new Pose2d();
 
     SmartDashboard.putNumber("Initial pose x", initialPose.getX());
 
@@ -152,7 +141,11 @@ public class Drivetrain extends SubsystemBase{
   public PIDController yController = new PIDController(1.0, 0.04, 0.00);
   public PIDController rotController = new PIDController(1.0, 0.02, 0.00);
 
-  public void matchPath(PathPlannerState state){
+ /*
+ *
+ * 
+ * 
+ *  public void matchPath(PathPlannerState state){
 
     Pose2d targetPose = state.poseMeters; // remember, rotation isn't actually robot rotation, it is the velocity angle. For robot rotation, use holonomic
     Translation2d vel = new Translation2d(state.velocityMetersPerSecond, 0);
@@ -181,6 +174,8 @@ public class Drivetrain extends SubsystemBase{
     
     drive(driveX, driveY, driveRot, true);
   }
+
+  */
 
   public double getHeading(){
     return -navx.getAngle() + startingHeading;
