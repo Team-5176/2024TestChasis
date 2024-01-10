@@ -34,7 +34,7 @@ public class SwerveModule {
   public final RelativeEncoder m_driveEncoder;
 
   // Gains determined by guess and check method
-  private final PIDController m_drivePIDController = new PIDController(0.0, 0.000, 0);
+  private final PIDController m_drivePIDController = new PIDController(0.1, 0.001, 0);
 
   // Gains determined by guess and check method
   private final ProfiledPIDController m_turningPIDController =
@@ -50,7 +50,7 @@ public class SwerveModule {
   
   
   // The gains for this feedForward were determined using the SysId toolsuite, which calculates gains based on motor voltage, hence the conversion
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(00 * Constants.VOLTAGE_TO_PERCENT_POWER, 0 * Constants.VOLTAGE_TO_PERCENT_POWER); 
+  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.63988 * Constants.VOLTAGE_TO_PERCENT_POWER, 0.63988 * Constants.VOLTAGE_TO_PERCENT_POWER); 
 
 
   // ks = power level where motor first starts turning
