@@ -96,7 +96,7 @@ public class SwerveModule {
 
   private double getdriveVelocity(){
     //TODO: Make sure that this gets changed to work wtih the neo relative encoder
-    double rotationsPerSecondofWheel = m_driveEncoder.getVelocity(); // Rev library automatically calculates velocity if given conversion factor(done in constructor)
+    double rotationsPerSecondofWheel = m_driveEncoder.getVelocity() / 60; // Rev library automatically calculates velocity if given conversion factor(done in constructor), divide by 60 to convert from RPM to RPS
     return rotationsPerSecondofWheel * kWheelRadius * Math.PI * 2; // speed of the wheel treads in meters/second
   }
 

@@ -64,17 +64,19 @@ public class Drivetrain extends SubsystemBase{
       }
       else{
         initialPose = Constants.AutonomousPaths.path1_1Red.getInitialHolonomicPose();
-        SmartDashboard.putNumber("Initial pose x", initialPose.getX());
       }
     } 
+
     else{
       initialPose = new Pose2d();
-      
     }
+
+    SmartDashboard.putNumber("Initial pose x", initialPose.getX());
 
     startingHeading = initialPose.getRotation().getDegrees();
 
     Robot.m_swerve.navx.reset();
+    
     /* Here we use SwerveDrivePoseEstimator so that we can fuse odometry readings. The numbers used
     below are robot specific, and should be tuned. */
     
