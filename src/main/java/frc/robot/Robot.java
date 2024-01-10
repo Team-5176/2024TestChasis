@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putBoolean("Attempt Charging Station", false);
     //SmartDashboard.putNumber("Starting position", 0);
     //gets alliance color from driverStation and sets IS_BLUE acordingly;
-    if(DriverStation.getAlliance() == Alliance.Red)
+    if(DriverStation.getAlliance().get() == Alliance.Red)
       Constants.IS_BLUE = false;
     else
       Constants.IS_BLUE = true;

@@ -47,7 +47,6 @@
           // Change the name of your camera here to whatever it is in the PhotonVision UI.
           photonCamera = new PhotonCamera(VisionConstants.cameraName);
   
-          try {
               // TODO: Remember to update this with the 2024 feild layout whenever it starts existing
               AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
               // Create pose estimator
@@ -55,12 +54,7 @@
                       new PhotonPoseEstimator(
                               fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, VisionConstants.robotToCam);
               photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
-          } catch (IOException e) {
-              // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if we don't know
-              // where the tags are.
-              DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
-              photonPoseEstimator = null;
-          }
+
       }
   
       /**
