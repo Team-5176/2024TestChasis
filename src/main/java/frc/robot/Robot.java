@@ -90,14 +90,19 @@ public class Robot extends TimedRobot {
     isAuto = false;
     SmartDashboard.putNumber("Pos x", m_swerve.getPose().getX());
     SmartDashboard.putNumber("Pos y", m_swerve.getPose().getY());
-    SmartDashboard.putNumber("Heading", angle);
-    SmartDashboard.putNumber("navx raw heading", m_swerve.navx.getAngle());
-    SmartDashboard.putBoolean("Navx connected", m_swerve.navx.isConnected());
-    SmartDashboard.putBoolean("is blue", Constants.IS_BLUE);   
+    //SmartDashboard.putNumber("Heading", angle);
+    //SmartDashboard.putNumber("navx raw heading", m_swerve.navx.getAngle());
+    //SmartDashboard.putBoolean("Navx connected", m_swerve.navx.isConnected());
+    //SmartDashboard.putBoolean("is blue", Constants.IS_BLUE);   
     SmartDashboard.putNumber("FL_ENCODER", m_swerve.m_frontLeft.m_turningEncoder.getRotation().getDegrees());
     SmartDashboard.putNumber("FR_ENCODER", m_swerve.m_frontRight.m_turningEncoder.getRotation().getDegrees());
     SmartDashboard.putNumber("BL_ENCODER", m_swerve.m_backLeft.m_turningEncoder.getRotation().getDegrees());
     SmartDashboard.putNumber("BR_ENCODER", m_swerve.m_backRight.m_turningEncoder.getRotation().getDegrees());
+
+    SmartDashboard.putNumber("FL_SPEED", m_swerve.m_frontLeft.m_driveEncoder.getVelocity());
+    SmartDashboard.putNumber("FR_SPEED", m_swerve.m_frontRight.m_driveEncoder.getVelocity());
+    SmartDashboard.putNumber("BL_SPEED", m_swerve.m_backLeft.m_driveEncoder.getVelocity());
+    SmartDashboard.putNumber("BR_SPEED", m_swerve.m_backRight.m_driveEncoder.getVelocity());
   }
 
 

@@ -34,7 +34,7 @@ public class SwerveModule {
   public final RelativeEncoder m_driveEncoder;
 
   // Gains determined by guess and check method
-  private final PIDController m_drivePIDController = new PIDController(0.1, 0.001, 0);
+  private final PIDController m_drivePIDController = new PIDController(0.01, 0.00, 0);
 
   // Gains determined by guess and check method
   private final ProfiledPIDController m_turningPIDController =
@@ -50,7 +50,7 @@ public class SwerveModule {
   
   
   // The gains for this feedForward were determined using the SysId toolsuite, which calculates gains based on motor voltage, hence the conversion
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.63988 * Constants.VOLTAGE_TO_PERCENT_POWER, 0.63988 * Constants.VOLTAGE_TO_PERCENT_POWER); 
+  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0 * 0.63988 * Constants.VOLTAGE_TO_PERCENT_POWER,0 * 0.63988 * Constants.VOLTAGE_TO_PERCENT_POWER); 
 
 
   // ks = power level where motor first starts turning
@@ -84,7 +84,7 @@ public class SwerveModule {
 
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_driveEncoder.setPositionConversionFactor(Constants.DRIVE_COVNV_FACT);
-    m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_COVNV_FACT);
+    m_driveEncoder.setVelocityConversionFactor(Constants.DRIVE_COVNV_FACT/60);
 
     m_driveMotor.burnFlash();
     m_turningMotor.burnFlash();
@@ -96,7 +96,7 @@ public class SwerveModule {
 
   private double getdriveVelocity(){
     //TODO: Make sure that this gets changed to work wtih the neo relative encoder
-    double rotationsPerSecondofWheel = m_driveEncoder.getVelocity() / 60; // Rev library automatically calculates velocity if given conversion factor(done in constructor), divide by 60 to convert from RPM to RPS
+    double rotationsPerSecondofWheel = m_driveEncoder.getVelocity(); // Rev library automatically calculates velocity if given conversion factor(done in constructor), divide by 60 to convert from RPM to RPS
     return rotationsPerSecondofWheel * kWheelRadius * Math.PI * 2; // speed of the wheel treads in meters/second
   }
 
