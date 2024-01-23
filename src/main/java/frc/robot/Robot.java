@@ -4,154 +4,175 @@
 
 package frc.robot;
 
-
-
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.util.LidarLite;
+import java.io.File;
+import java.io.IOException;
+import swervelib.parser.SwerveParser;
 
+/**
+ * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
+ * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
+ * project, you must also update the build.gradle file in the project.
+ */
+public class Robot extends TimedRobot
+{
 
+  private static Robot   instance;
+  private        Command m_autonomousCommand;
 
-public class Robot extends TimedRobot {
-  public static final XboxController m_controller = new XboxController(0);
-  public static final XboxController m_copilot_controller = new XboxController(1);
-  public static Drivetrain m_swerve;
+  private RobotContainer m_robotContainer;
 
-  // Slew rate limiters to make joystick inputs more gentle; 1/2 sec from 0 to 1.
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(2);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(2);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(2);
-  
-  //LidarSensor
-  private final LidarLite Lidar = new LidarLite(new DigitalInput(2));
+  private Timer disabledTimer;
 
+  public Robot()
+  {
+    instance = this;
+  }
 
-  //variables to be populated from SmartDashboard, determine what auto to do
-  private boolean balance = false;
+  public static Robot getInstance()
+  {
+    return instance;
+  }
 
-  public static boolean isAuto;
-  
+  /**
+   * This function is run when the robot is first started up and should be used for any initialization code.
+   */
+  @Override
+  public void robotInit()
+  {
+    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
 
-  
-  public Robot(){
-    m_swerve = new Drivetrain();    
-    
+    // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
+    // immediately when disabled, but then also let it be pushed more 
+    disabledTimer = new Timer();
+  }
+
+  /**
+   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics that you want ran
+   * during disabled, autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+   * SmartDashboard integrated updating.
+   */
+  @Override
+  public void robotPeriodic()
+  {
+    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+    // commands, running already-scheduled commands, removing finished or interrupted commands,
+    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().run();
+  }
+
+  /**
+   * This function is called once each time the robot enters Disabled mode.
+   */
+  @Override
+  public void disabledInit()
+  {
+    m_robotContainer.setMotorBrake(true);
+    disabledTimer.reset();
+    disabledTimer.start();
   }
 
   @Override
-  public void robotInit() {
-    //Send these values to SmartDashboard so that they can be used to choose what auto to do. 
-    //SmartDashboard.putBoolean("Attempt Charging Station", false);
-    //SmartDashboard.putNumber("Starting position", 0);
-    //gets alliance color from driverStation and sets IS_BLUE acordingly;
-    if(DriverStation.getAlliance().get() == Alliance.Red)
-      Constants.IS_BLUE = false;
-    else
-      Constants.IS_BLUE = true;
-  }
-
-  @Override
-  public void robotPeriodic(){
-  CommandScheduler.getInstance().run();
-
-  }
-
-  @Override
-  public void autonomousInit(){
-
-  }
-
-  @Override
-  public void autonomousPeriodic() {
-    
-  }
-
-  @Override
-  public void teleopInit(){
-    isAuto = false;
-    if(m_swerve == null){
-      //initiate swerve based on starting position specified in SmartDashboard. I rounded before converting to int just in case there are any double shenanigans
-      m_swerve = new Drivetrain();
+  public void disabledPeriodic()
+  {
+    if (disabledTimer.hasElapsed(Constants.Drivebase.WHEEL_LOCK_TIME))
+    {
+      m_robotContainer.setMotorBrake(false);
+      disabledTimer.stop();
     }
-    m_swerve.navx.reset();
+  }
+
+  /**
+   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+   */
+  @Override
+  public void autonomousInit()
+  {
+    m_robotContainer.setMotorBrake(true);
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null)
+    {
+      m_autonomousCommand.schedule();
+    }
+  }
+
+  /**
+   * This function is called periodically during autonomous.
+   */
+  @Override
+  public void autonomousPeriodic()
+  {
   }
 
   @Override
-  public void teleopPeriodic() {
-    //orch.play();
-    driveWithJoystick(false);
-    double angle = m_swerve.getHeading();
-    isAuto = false;
-    SmartDashboard.putNumber("Pos x", m_swerve.getPose().getX());
-    SmartDashboard.putNumber("Pos y", m_swerve.getPose().getY());
-    //SmartDashboard.putNumber("Heading", angle);
-    //SmartDashboard.putNumber("navx raw heading", m_swerve.navx.getAngle());
-    //SmartDashboard.putBoolean("Navx connected", m_swerve.navx.isConnected());
-    //SmartDashboard.putBoolean("is blue", Constants.IS_BLUE);   
-    SmartDashboard.putNumber("FL_ENCODER", m_swerve.m_frontLeft.m_turningEncoder.getRotation().getDegrees());
-    SmartDashboard.putNumber("FR_ENCODER", m_swerve.m_frontRight.m_turningEncoder.getRotation().getDegrees());
-    SmartDashboard.putNumber("BL_ENCODER", m_swerve.m_backLeft.m_turningEncoder.getRotation().getDegrees());
-    SmartDashboard.putNumber("BR_ENCODER", m_swerve.m_backRight.m_turningEncoder.getRotation().getDegrees());
-
-    SmartDashboard.putNumber("FL_SPEED", m_swerve.m_frontLeft.m_driveEncoder.getVelocity());
-    SmartDashboard.putNumber("FR_SPEED", m_swerve.m_frontRight.m_driveEncoder.getVelocity());
-    SmartDashboard.putNumber("BL_SPEED", m_swerve.m_backLeft.m_driveEncoder.getVelocity());
-    SmartDashboard.putNumber("BR_SPEED", m_swerve.m_backRight.m_driveEncoder.getVelocity());
-  }
-
-
-  // These two methods get the left stick controller input and add a smooth deadzone
-  private double getLeftY(){
-    double response = 0;
-    if(m_controller.getLeftY() > Constants.CONTROLLER_DRIVE_DEADZONE){
-      response = (m_controller.getLeftY() - Constants.CONTROLLER_DRIVE_DEADZONE);
-    }  else if(m_controller.getLeftY() < -Constants.CONTROLLER_DRIVE_DEADZONE){
-      response = (m_controller.getLeftY() + Constants.CONTROLLER_DRIVE_DEADZONE);
+  public void teleopInit()
+  {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (m_autonomousCommand != null)
+    {
+      m_autonomousCommand.cancel();
     }
-    return -response;
+    m_robotContainer.setDriveMode();
+    m_robotContainer.setMotorBrake(true);
   }
-  private double getLeftX(){
-    double response = 0;
-    if(m_controller.getLeftX() > Constants.CONTROLLER_DRIVE_DEADZONE){
-      response = (m_controller.getLeftX() - Constants.CONTROLLER_DRIVE_DEADZONE);
-    }  else if(m_controller.getLeftX() < -Constants.CONTROLLER_DRIVE_DEADZONE){
-      response = (m_controller.getLeftX() + Constants.CONTROLLER_DRIVE_DEADZONE);
+
+  /**
+   * This function is called periodically during operator control.
+   */
+  @Override
+  public void teleopPeriodic()
+  {
+  }
+
+  @Override
+  public void testInit()
+  {
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
+    try
+    {
+      new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"));
+    } catch (IOException e)
+    {
+      throw new RuntimeException(e);
     }
-    return -response;
   }
 
-  private void driveWithJoystick(boolean fieldRelative) {
-    // Get the x speed. We are inverting this because Xbox controllers return
-    // negative values when we push forward.
-    var xSpeed = -m_xspeedLimiter.calculate(getLeftY()) * Drivetrain.kMaxSpeed;
-    
-    // Get the y speed or sideways/strafe speed. We are inverting this because
-    // we want a positive value when we pull to the left. Xbox controllers
-    // return positive values when you pull to the right by default.
-    var ySpeed = -m_yspeedLimiter.calculate(getLeftX()) * Drivetrain.kMaxSpeed;
-
-    // Get the rate of angular rotation. We are inverting this because we want a
-    // positive value when we pull to the left (remember, CCW is positive in
-    // mathematics). Xbox controllers return positive values when you pull to
-    // the right by default.
-    var rot = -m_rotLimiter.calculate(m_controller.getRightX()) * Drivetrain.kMaxAngularSpeed;
-
-    if(!Constants.IS_BLUE){
-      xSpeed = -xSpeed;
-      ySpeed = -ySpeed;
-    }
-    m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative);
-    
-    SmartDashboard.putNumber("Lidar Readout", Lidar.getDistance());
-    
+  /**
+   * This function is called periodically during test mode.
+   */
+  @Override
+  public void testPeriodic()
+  {
   }
 
+  /**
+   * This function is called once when the robot is first started up.
+   */
+  @Override
+  public void simulationInit()
+  {
+  }
 
- 
+  /**
+   * This function is called periodically whilst in simulation.
+   */
+  @Override
+  public void simulationPeriodic()
+  {
+  }
 }
