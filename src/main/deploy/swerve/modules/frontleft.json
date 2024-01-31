@@ -1,6 +1,5 @@
 {
 
-  FIX THE MOTOR CONTROLLER ID's
 
   "location": {
     "front": 9.5,
@@ -9,12 +8,12 @@
   "absoluteEncoderOffset": 0,
   "drive": {
     "type": "sparkmax",
-    "id": 2,
+    "id": 8,
     "canbus": null
   },
   "angle": {
     "type": "sparkmax",
-    "id": 1,
+    "id": 7,
     "canbus": null
   },
   "conversionFactor": {
