@@ -31,7 +31,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.VisionConstants;
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
