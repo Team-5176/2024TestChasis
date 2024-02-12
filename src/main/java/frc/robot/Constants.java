@@ -52,18 +52,4 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
   }
 
-
-  public static class VisionConstants {
-        public static final Transform3d robotToCam =
-                new Transform3d(
-                    //0.127
-                        new Translation3d(0.127, 0.0, 0.4318),
-                        new Rotation3d(
-                                0, 0, //2.64
-                                Math.toRadians(6.0))); // Cam mounted facing forward, half a meter forward of center, half a meter up
-        // from center.
-        public static final String cameraName = "Cam1";
-    }
-
-
 }
