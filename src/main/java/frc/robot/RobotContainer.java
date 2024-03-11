@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.util.PhotonCameraWrapper;
-
 import java.io.File;
 
 /**
@@ -42,8 +40,6 @@ public class RobotContainer
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
-
-  PhotonCameraWrapper vision = new PhotonCameraWrapper();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -138,8 +134,5 @@ public class RobotContainer
     drivebase.setMotorBrake(brake);
   }
 
-  public PhotonCameraWrapper getVision()
-  {
-    return vision;
-  }
+  
 }
