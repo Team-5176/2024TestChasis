@@ -42,7 +42,7 @@ public final class Constants
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
-  public static class OperatorConstants
+  public static class DriverConstants
   {
 
     // Joystick Deadband
@@ -52,12 +52,30 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
   }
 
+  public static class PassengerConstants
+  {
+
+    public static final double LEFT_Y_DEADBAND  = 0.01;
+    public static final double RIGHT_Y_DEADBAND  = 0.01;
+
+  }
+
   public static final class ClimberConstants
   {
 
     public static final int leftClimberMotor = 11;
     public static final int rightClimberMotor = 12;
 
+  }
+
+  public static final class ArmConstants
+  {
+    public static final int pivotMotor = 10;
+    public static final double gearRatio = 1/60;
+
+    public static final int topShooterMotor = 13;
+    public static final int bottomShooterMotor = 14;
+    public static final int intakeMotor = 15;
   }
 
 }
