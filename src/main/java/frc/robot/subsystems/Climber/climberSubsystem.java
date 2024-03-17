@@ -11,12 +11,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class climberSubsystem extends SubsystemBase {
+public class ClimberSubsystem extends SubsystemBase {
     
     private TalonFX leftTalon = new TalonFX(ClimberConstants.leftClimberMotor);
     private TalonFX rightTalon = new TalonFX(ClimberConstants.rightClimberMotor);
 
-    public climberSubsystem(){
+    public ClimberSubsystem(){
 
     }
 

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -71,11 +72,16 @@ public final class Constants
   public static final class ArmConstants
   {
     public static final int pivotMotor = 10;
-    public static final double gearRatio = 1/60;
+    public static final double gearRatio = 1/300;
 
     public static final int topShooterMotor = 13;
     public static final int bottomShooterMotor = 14;
     public static final int intakeMotor = 15;
+
+    public static final int ThroughBoreChannel = 0;
+    public static final double encoderOffset = 0;
+
+    public static final PIDController PIV_CONTROLLER = new PIDController(0, 0, 0);
   }
 
 }
