@@ -79,9 +79,15 @@ public final class Constants
     public static final int intakeMotor = 15;
 
     public static final int ThroughBoreChannel = 0;
-    public static final double encoderOffset = 0;
+    public static final double encoderOffset = -110;
 
-    public static final PIDController PIV_CONTROLLER = new PIDController(0, 0, 0);
+    public static final PIDController PIVOT_CONTROLLER = new PIDController(0, 0, 0);
+
+    public static final double IntakeAngle = 0;
+    
+    public static final double StowAngle = 90;
+
+    public static final double AmpAngle = 115;
   }
 
 }

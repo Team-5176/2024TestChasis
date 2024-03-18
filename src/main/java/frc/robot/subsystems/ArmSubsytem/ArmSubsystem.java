@@ -21,13 +21,13 @@ public class ArmSubsystem extends PIDSubsystem{
     private CANSparkMax topShooterController;
     private CANSparkMax bottomShooterController;
 
-    private int setpoint = 0;
+    private int setpoint = 1;
     // 0 - Intake
     // 1 - Stow
     // 2 - Amp
 
     public ArmSubsystem(){
-        super(ArmConstants.PIV_CONTROLLER);
+        super(ArmConstants.PIVOT_CONTROLLER);
         throughBoreEncoder = new DutyCycleEncoder(ArmConstants.ThroughBoreChannel);
         throughBoreEncoder.setDistancePerRotation(360);
         throughBoreEncoder.setDutyCycleRange(1/1025, 1024/1025);
@@ -76,13 +76,13 @@ public class ArmSubsystem extends PIDSubsystem{
             bottomShooterController.set(.5);
             switch (setpoint) {
                 case 0:
-                    setSetpoint(0);
+                    setSetpoint(ArmConstants.IntakeAngle);
                     break;
                 case 1:
-                    setSetpoint(90);
+                    setSetpoint(ArmConstants.StowAngle);
                     break;
                 case 2:
-                    setSetpoint(115);
+                    setSetpoint(ArmConstants.AmpAngle);
                     break;
             
                 default:
