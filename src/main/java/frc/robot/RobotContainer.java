@@ -57,7 +57,7 @@ public class RobotContainer
 
         climber.setDefaultCommand(climberCommand);
 
-        Command armCommand = arm.getDefaultCommand();
+        Command armCommand = arm.getDefault(() -> MathUtil.applyDeadband(driverXbox.getRightY(), PassengerConstants.LEFT_Y_DEADBAND));
         arm.setDefaultCommand(armCommand);
 
     /*AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,

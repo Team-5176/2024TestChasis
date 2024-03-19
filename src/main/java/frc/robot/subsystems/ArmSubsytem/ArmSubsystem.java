@@ -1,5 +1,7 @@
 package frc.robot.subsystems.ArmSubsytem;
 
+import java.util.function.DoubleSupplier;
+
 import javax.lang.model.util.ElementScanner14;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -70,9 +72,9 @@ public class ArmSubsystem extends PIDSubsystem{
             setpoint++;
     }
 
-    public Command getDefualt() {
+    public Command getDefault(DoubleSupplier axis) {
         return run(() -> {
-            topShooterController.set(.5);
+            /*topShooterController.set(.5);
             bottomShooterController.set(.5);
             switch (setpoint) {
                 case 0:
@@ -88,7 +90,8 @@ public class ArmSubsystem extends PIDSubsystem{
                 default:
                     System.out.println("I do not know how this happened but somehow [setpoint] isn't 0, 1, or 2");
                     break;
-            }
+            } */
+            pivotController.set(axis.getAsDouble());
         });
     }
 
