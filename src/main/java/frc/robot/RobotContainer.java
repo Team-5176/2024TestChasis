@@ -34,7 +34,6 @@ public class RobotContainer
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
-  private final ClimberSubsystem climber = new ClimberSubsystem();
   private final ArmSubsystem arm = new ArmSubsystem();
 
 
@@ -51,14 +50,11 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
 
-    Command climberCommand = climber.getClimberCommand(
-        () -> MathUtil.applyDeadband(passengerXbox.getLeftY(), PassengerConstants.LEFT_Y_DEADBAND), 
-        () -> MathUtil.applyDeadband(passengerXbox.getRightY(), PassengerConstants.RIGHT_Y_DEADBAND));
 
-        climber.setDefaultCommand(climberCommand);
-
-        Command armCommand = arm.getDefault(() -> MathUtil.applyDeadband(driverXbox.getRightY(), PassengerConstants.LEFT_Y_DEADBAND));
-        arm.setDefaultCommand(armCommand);
+      Command armCommand = arm.getDefault(() -> MathUtil.applyDeadband(passengerXbox.getRightY(), PassengerConstants.LEFT_Y_DEADBAND),
+                  passengerXbox::getXButtonPressed,
+                  passengerXbox::getBButtonPressed);
+      arm.setDefaultCommand(armCommand);
 
     /*AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),

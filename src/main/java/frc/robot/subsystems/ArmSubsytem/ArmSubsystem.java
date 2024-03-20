@@ -1,5 +1,6 @@
 package frc.robot.subsystems.ArmSubsytem;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import javax.lang.model.util.ElementScanner14;
@@ -40,6 +41,11 @@ public class ArmSubsystem extends PIDSubsystem{
         topShooterController = new CANSparkMax(ArmConstants.topShooterMotor, MotorType.kBrushless);
         bottomShooterController = new CANSparkMax(ArmConstants.bottomShooterMotor, MotorType.kBrushless);
         pivotController = new TalonFX(ArmConstants.pivotMotor);
+
+
+        intakeController.burnFlash();
+        topShooterController.burnFlash();
+        bottomShooterController.burnFlash();
     }
 
     @Override
@@ -72,26 +78,19 @@ public class ArmSubsystem extends PIDSubsystem{
             setpoint++;
     }
 
-    public Command getDefault(DoubleSupplier axis) {
+    public Command getDefault(DoubleSupplier pivotAxis, BooleanSupplier intakeBool, BooleanSupplier shooterBool) {
         return run(() -> {
-            /*topShooterController.set(.5);
-            bottomShooterController.set(.5);
-            switch (setpoint) {
-                case 0:
-                    setSetpoint(ArmConstants.IntakeAngle);
-                    break;
-                case 1:
-                    setSetpoint(ArmConstants.StowAngle);
-                    break;
-                case 2:
-                    setSetpoint(ArmConstants.AmpAngle);
-                    break;
-            
-                default:
-                    System.out.println("I do not know how this happened but somehow [setpoint] isn't 0, 1, or 2");
-                    break;
-            } */
-            pivotController.set(axis.getAsDouble());
+            pivotController.set(0.1*pivotAxis.getAsDouble());
+            if(intakeBool.getAsBoolean()){
+                setIntakeSpeed(1);
+            }
+            if(shooterBool.getAsBoolean()){
+                setShooterSpeed(1);
+            }
+            else{
+                setShooterSpeed(.5);
+            }
+
         });
     }
 
@@ -115,3 +114,21 @@ public class ArmSubsystem extends PIDSubsystem{
     }
     
 }
+
+    /*topShooterController.set(.5);
+            bottomShooterController.set(.5);
+            switch (setpoint) {
+                case 0:
+                    setSetpoint(ArmConstants.IntakeAngle);
+                    break;
+                case 1:
+                    setSetpoint(ArmConstants.StowAngle);
+                    break;
+                case 2:
+                    setSetpoint(ArmConstants.AmpAngle);
+                    break;
+            
+                default:
+                    System.out.println("I do not know how this happened but somehow [setpoint] isn't 0, 1, or 2");
+                    break;
+            } */
