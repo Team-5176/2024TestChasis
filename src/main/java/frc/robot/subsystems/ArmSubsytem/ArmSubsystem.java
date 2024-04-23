@@ -42,6 +42,12 @@ public class ArmSubsystem extends PIDSubsystem{
         bottomShooterController = new CANSparkMax(ArmConstants.bottomShooterMotor, MotorType.kBrushless);
         pivotController = new TalonFX(ArmConstants.pivotMotor);
 
+        intakeController.setInverted(true);
+        intakeController.setSmartCurrentLimit(40);
+
+        topShooterController.setSmartCurrentLimit(30);
+        bottomShooterController.setSmartCurrentLimit(30);
+
 
         intakeController.burnFlash();
         topShooterController.burnFlash();
@@ -78,33 +84,37 @@ public class ArmSubsystem extends PIDSubsystem{
             setpoint++;
     }
 
-    public Command getDefault(DoubleSupplier pivotAxis, BooleanSupplier intakeBool, BooleanSupplier shooterBool) {
+    public Command getDefault(DoubleSupplier pivotAxis, BooleanSupplier intakeBool, BooleanSupplier shooterBool, BooleanSupplier spitOutBool) {
         return run(() -> {
-            pivotController.set(0.1*pivotAxis.getAsDouble());
+            pivotController.set(0.3*pivotAxis.getAsDouble());
             if(intakeBool.getAsBoolean()){
                 setIntakeSpeed(1);
             }
-            if(shooterBool.getAsBoolean()){
-                setShooterSpeed(1);
+            else if(spitOutBool.getAsBoolean()){
+                setIntakeSpeed(-1);
+                }
+            else {
+                setIntakeSpeed(0);
             }
-            else{
+            if(shooterBool.getAsBoolean()){
                 setShooterSpeed(.5);
             }
+            else{
+                setShooterSpeed(0);
+            }
 
         });
     }
 
-    public Command setIntakeSpeed(double speed) {
-        return run(() -> {
+    public void setIntakeSpeed(double speed) {
+        
             intakeController.set(speed);
-        });
     }
 
-    public Command setShooterSpeed(double speed) {
-        return run(() -> {
+    public void setShooterSpeed(double speed) {
+        
             topShooterController.set(speed);
             bottomShooterController.set(speed);
-        });
     }
     //TODO: Please make this work
     public Command aim() {

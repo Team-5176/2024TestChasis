@@ -75,8 +75,8 @@ public final class Constants
     public static final double gearRatio = 1/300;
 
     public static final int topShooterMotor = 13;
-    public static final int bottomShooterMotor = 14;
-    public static final int intakeMotor = 15;
+    public static final int bottomShooterMotor = 15;
+    public static final int intakeMotor = 14;
 
     public static final int ThroughBoreChannel = 0;
     public static final double encoderOffset = -110;

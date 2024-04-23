@@ -52,8 +52,9 @@ public class RobotContainer
 
 
       Command armCommand = arm.getDefault(() -> MathUtil.applyDeadband(passengerXbox.getRightY(), PassengerConstants.LEFT_Y_DEADBAND),
-                  passengerXbox::getXButtonPressed,
-                  passengerXbox::getBButtonPressed);
+                  passengerXbox::getXButton,
+                  passengerXbox::getBButton,
+                  passengerXbox::getYButton);
       arm.setDefaultCommand(armCommand);
 
     /*AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
@@ -125,7 +126,7 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Shoot and Run Center-P", true);
+    return drivebase.getAutonomousCommand("BackUp", true);
   }
 
   public void setDriveMode()
